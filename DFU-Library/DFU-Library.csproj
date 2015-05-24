@@ -9,7 +9,8 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DFU_Library</RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <AssemblyName>DFU-Library</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>true</AndroidApplication>
@@ -49,7 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\DfuBaseService.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\Exception\DeviceDiconnectedException.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\Exception\DfuException.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\Exception\HexFileValidationException.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\Exception\RemoteDfuException.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\Exception\UnknownResponseException.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\Exception\UploadAbortedException.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -68,6 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="No\NordicSemi\Droid\DFU\Manifest\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
