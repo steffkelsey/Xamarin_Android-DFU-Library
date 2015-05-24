@@ -53,15 +53,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="No\NordicSemi\Droid\DFU\ArchiveInputStream.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\BondStateBroadcastReceiver.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\ConnectionStateBroadcastReceiver.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\DfuActionReceiver.cs" />
     <Compile Include="No\NordicSemi\Droid\DFU\DfuBaseService.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\DfuSettingsConstants.cs" />
     <Compile Include="No\NordicSemi\Droid\DFU\Exception\DeviceDiconnectedException.cs" />
     <Compile Include="No\NordicSemi\Droid\DFU\Exception\DfuException.cs" />
     <Compile Include="No\NordicSemi\Droid\DFU\Exception\HexFileValidationException.cs" />
     <Compile Include="No\NordicSemi\Droid\DFU\Exception\RemoteDfuException.cs" />
     <Compile Include="No\NordicSemi\Droid\DFU\Exception\UnknownResponseException.cs" />
     <Compile Include="No\NordicSemi\Droid\DFU\Exception\UploadAbortedException.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\HexInputStream.cs" />
     <Compile Include="No\NordicSemi\Droid\DFU\Manifest\FileInfo.cs" />
     <Compile Include="No\NordicSemi\Droid\DFU\Manifest\InitPacketData.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\Manifest\Manifest.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\Manifest\ManifestFile.cs" />
+    <Compile Include="No\NordicSemi\Droid\DFU\Manifest\SoftDeviceBootloaderFileInfo.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
