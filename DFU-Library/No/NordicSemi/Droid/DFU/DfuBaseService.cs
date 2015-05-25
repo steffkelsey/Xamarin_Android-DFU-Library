@@ -607,7 +607,9 @@ namespace No.NordicSemi.Droid.DFU
 
 	    private BroadcastReceiver _bondStateBroadcastReceiver;
 
-	    private BluetoothGattCallback _gattCallback = new BluetoothGattCallback() {
+	    private GattCallback _gattCallback = new GattCallback();
+        /*
+        {
 		    @Override
 		    public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
 			    // Check whether an error occurred
@@ -627,7 +629,7 @@ namespace No.NordicSemi.Droid.DFU
 					     *  on Samsung Note 2.
 					     *  
 					     *  NOTE: We are doing this to avoid the hack with calling the hidden gatt.refresh() method, at least for bonded devices.
-					     */
+					     *
 					    if (gatt.getDevice().getBondState() == BluetoothDevice.BOND_BONDED) {
 						    try {
 							    synchronized (this) {
@@ -742,7 +744,7 @@ namespace No.NordicSemi.Droid.DFU
 				     * otherwise
 				     * - send the next packet, if notification is not required at that moment, or
 				     * - do nothing, because we have to wait for the notification to confirm the data received
-				     */
+				     *
 				    if (DFU_PACKET_UUID.equals(characteristic.getUuid())) {
 					    if (_imageSizeSent && mInitPacketSent) {
 						    // If the PACKET characteristic was written with image data, update counters
@@ -801,7 +803,7 @@ namespace No.NordicSemi.Droid.DFU
 				    /*
 				     * If a Reset (Op Code = 6) or Activate and Reset (Op Code = 5) commands are sent, the DFU target resets and sometimes does it so quickly that does not manage to send
 				     * any ACK to the controller and error 133 is thrown here. This bug should be fixed in SDK 8.0+ where the target would gracefully disconnect before restarting.
-				     */
+				     *
 				    if (_resetRequestSent)
 					    _requestCompleted = true;
 				    else {
@@ -821,7 +823,7 @@ namespace No.NordicSemi.Droid.DFU
 			    if (status == BluetoothGatt.GATT_SUCCESS) {
 				    /*
 				     * This method is called when the DFU Version characteristic has been read.
-				     */
+				     *
 				    sendLogBroadcast(LOG_LEVEL_INFO, "Read Response received from " + characteristic.getUuid() + ", value (0x): " + parse(characteristic));
 				    mReceivedData = characteristic.getValue();
 				    _requestCompleted = true;
@@ -875,7 +877,7 @@ namespace No.NordicSemi.Droid.DFU
 				     * If the DFU target device is in invalid state (f.e. the Init Packet is required but has not been selected), the target will send DFU_STATUS_INVALID_STATE error
 				     * for each firmware packet that was send. We are interested may ignore all but the first one.
 				     * After obtaining a remote DFU error the OP_CODE_RESET_KEY will be sent.
-				     */
+				     *
 					    if (_remoteErrorOccurred)
 						    break;
 					    int status = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 2);
@@ -892,7 +894,7 @@ namespace No.NordicSemi.Droid.DFU
 				    _lock.notifyAll();
 			    }
 		    }
-
+        
 		    // This method is repeated here and in the service class for performance matters.
 		    private String parse(BluetoothGattCharacteristic characteristic) {
 			    byte[] data = characteristic.getValue();
@@ -924,49 +926,49 @@ namespace No.NordicSemi.Droid.DFU
         {
 		    //super(TAG);
             _connectionStateBroadcastReceiver = new ConnectionStateBroadcastReceiver(ref _deviceAddress, ref _connectionState);
-            _dfuActionReceiver = new DfuActionReceiver(ref bool _paused, ref bool _aborted);
+            _dfuActionReceiver = new DfuActionReceiver(ref _paused, ref _aborted);
             _bondStateBroadcastReceiver = new BondStateBroadcastReceiver(ref _deviceAddress, ref _requestCompleted);
 	    }
 
 	    private static IntentFilter makeDfuActionIntentFilter() {
 		    IntentFilter intentFilter = new IntentFilter();
-		    intentFilter.addAction(DfuBaseService.BROADCAST_ACTION);
+		    intentFilter.AddAction(DfuBaseService.BroadcastAction);
 		    return intentFilter;
 	    }
 
-	    @Override
-	    public void onCreate() {
-		    super.onCreate();
+	    public override void OnCreate() 
+        {
+		    base.OnCreate();
 
 		    initialize();
 
-		    LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+		    LocalBroadcastManager manager = LocalBroadcastManager.GetInstance(this);
 		    IntentFilter actionFilter = makeDfuActionIntentFilter();
 		    manager.registerReceiver(mDfuActionReceiver, actionFilter);
-		    registerReceiver(mDfuActionReceiver, actionFilter); // Additionally we must register this receiver as a non-local to get broadcasts from the notification actions
+		    RegisterReceiver(mDfuActionReceiver, actionFilter); // Additionally we must register this receiver as a non-local to get broadcasts from the notification actions
 
 		    IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-		    registerReceiver(_connectionStateBroadcastReceiver, filter);
+		    RegisterReceiver(_connectionStateBroadcastReceiver, filter);
 
 		    IntentFilter bondFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-		    registerReceiver(mBondStateBroadcastReceiver, bondFilter);
+		    RegisterReceiver(mBondStateBroadcastReceiver, bondFilter);
 	    }
 
-	    @Override
-	    public void onDestroy() {
-		    super.onDestroy();
+	    public override void OnDestroy() 
+        {
+		    base.OnDestroy();
 
-		    LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+		    LocalBroadcastManager manager = LocalBroadcastManager.GetInstance(this);
 		    manager.unregisterReceiver(mDfuActionReceiver);
 
-		    unregisterReceiver(mDfuActionReceiver);
-		    unregisterReceiver(_connectionStateBroadcastReceiver);
-		    unregisterReceiver(mBondStateBroadcastReceiver);
+		    UnregisterReceiver(mDfuActionReceiver);
+		    UnregisterReceiver(_connectionStateBroadcastReceiver);
+		    UnregisterReceiver(mBondStateBroadcastReceiver);
 	    }
 
-	    @Override
-	    protected void onHandleIntent(Intent intent) {
-		    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+	    protected override void OnHandleIntent(Intent intent) 
+        {
+		    SharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(this);
 
 		    // Read input parameters
 		    String deviceAddress = intent.getStringExtra(EXTRA_DEVICE_ADDRESS);
@@ -999,7 +1001,7 @@ namespace No.NordicSemi.Droid.DFU
 
 		    _deviceAddress = deviceAddress;
 		    _deviceName = deviceName;
-		    _connectionState = STATE_DISCONNECTED;
+		    _connectionState = StateDisconnected;
 		    _bytesSent = 0;
 		    _bytesConfirmed = 0;
 		    _packetsSentSinceNotification = 0;
