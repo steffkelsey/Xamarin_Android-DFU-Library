@@ -35,6 +35,10 @@ using Java.Util;
 using Android.Bluetooth;
 using Java.IO;
 using Android.Util;
+using No.NordicSemi.Droid.DFU.Events;
+using Java.Lang;
+
+using String = System.String;
 
 namespace No.NordicSemi.Droid.DFU
 {
@@ -74,11 +78,11 @@ namespace No.NordicSemi.Droid.DFU
         /**
 	     * The address of the device to update.
 	     */
-	    public const String ExtraDeviceAddress = "No.NordicSemi.Doid.DFU.extra.ExtraDeviceAddress";
+	    public const string ExtraDeviceAddress = "No.NordicSemi.Doid.DFU.extra.ExtraDeviceAddress";
 	    /**
 	     * The optional device name. This name will be shown in the notification.
 	     */
-	    public const String ExtraDeviceName = "No.NordicSemi.Doid.DFU.extra.ExtraDeviceName";
+	    public const string ExtraDeviceName = "No.NordicSemi.Doid.DFU.extra.ExtraDeviceName";
 	    /**
 	     * <p>
 	     * If the new firmware (application) does not share the bond information with the old one, the bond information is lost. Set this flag to <code>true</code>
@@ -93,7 +97,7 @@ namespace No.NordicSemi.Droid.DFU
 	     * Search for occurrences of ExtraRestoreBond in this file to check the implementation and get more details.
 	     * </p>
 	     */
-	    public const String ExtraRestoreBond = "No.NordicSemi.Doid.DFU.extra.ExtraRestoreBond";
+	    public const string ExtraRestoreBond = "No.NordicSemi.Doid.DFU.extra.ExtraRestoreBond";
 	    /**
 	     * <p>This flag indicated whether the bond information should be kept or removed after an upgrade of the Application.
 	     * If an application is being updated on a bonded device with the DFU Bootloader that has been configured to preserve the bond information for the new application,
@@ -108,34 +112,34 @@ namespace No.NordicSemi.Droid.DFU
 	     * <p>In contrast to {@link #ExtraRestoreBond} this flag will not remove the old bonding and recreate a new one, but will keep the bond information untouched.</p>
 	     * <p>The default value of this flag is <code>false</code></p>
 	     */
-	    public const String ExtraKeepBond = "No.NordicSemi.Doid.DFU.extra.ExtraKeepBond";
+	    public const string ExtraKeepBond = "No.NordicSemi.Doid.DFU.extra.ExtraKeepBond";
 	    /**
 	     * A path to the file with the new firmware. It may point to a HEX, BIN or a ZIP file.
 	     * Some file manager applications return the path as a String while other return a Uri. Use the {@link #ExtraFileUri} in the later case.
 	     */
-	    public const String ExtraFilePath = "No.NordicSemi.Doid.DFU.extra.ExtraFilePath";
+	    public const string ExtraFilePath = "No.NordicSemi.Doid.DFU.extra.ExtraFilePath";
 	    /**
 	     * See {@link #ExtraFilePath} for details.
 	     */
-	    public const String ExtraFileUri = "No.NordicSemi.Doid.DFU.extra.ExtraFileUri";
+	    public const string ExtraFileUri = "No.NordicSemi.Doid.DFU.extra.ExtraFileUri";
 	    /**
 	     * The Init packet URI. This file is required if the Extended Init Packet is required (SDK 7.0+). Must point to a 'dat' file corresponding with the selected firmware.
 	     * The Init packet may contain just the CRC (in case of older versions of DFU) or the Extended Init Packet in binary format (SDK 7.0+).
 	     */
-	    public const String ExtraInitFilePath = "No.NordicSemi.Doid.DFU.extra.ExtraInitFilePath";
+	    public const string ExtraInitFilePath = "No.NordicSemi.Doid.DFU.extra.ExtraInitFilePath";
 	    /**
 	     * The Init packet URI. This file is required if the Extended Init Packet is required (SDK 7.0+). Must point to a 'dat' file corresponding with the selected firmware.
 	     * The Init packet may contain just the CRC (in case of older versions of DFU) or the Extended Init Packet in binary format (SDK 7.0+).
 	     */
-	    public const String ExtraInitFileUri = "No.NordicSemi.Doid.DFU.extra.ExtraInitFileUri";
+	    public const string ExtraInitFileUri = "No.NordicSemi.Doid.DFU.extra.ExtraInitFileUri";
 	    /**
 	     * The input file mime-type. Currently only "application/zip" (ZIP) or "application/octet-stream" (HEX or BIN) are supported. If this parameter is
 	     * empty the "application/octet-stream" is assumed.
 	     */
-	    public const String ExtraFileMimeType = "No.NordicSemi.Doid.DFU.extra.EXTRA_MIME_TYPE";
+	    public const string ExtraFileMimeType = "No.NordicSemi.Doid.DFU.extra.EXTRA_MIME_TYPE";
 	    // Since the DFU Library version 0.5 both HEX and BIN files are supported. As both files have the same MIME TYPE the distinction is made based on the file extension.
-	    public const String MimeTypeOctetStream = "application/octet-stream";
-	    public const String MimeTypeZip = "application/zip";
+	    public const string MimeTypeOctetStream = "application/octet-stream";
+	    public const string MimeTypeZip = "application/zip";
 	    /**
 	     * This optional extra parameter may contain a file type. Currently supported are:
 	     * <ul>
@@ -154,7 +158,7 @@ namespace No.NordicSemi.Droid.DFU
 	     * <li>If the {@link #ExtraFileMimeType} field is equal to {@value #MimeTypeZip} - the {@link #TypeAuto} is assumed.</li>
 	     * </ol>
 	     */
-	    public const String ExtraFileType = "No.NordicSemi.Doid.DFU.extra.ExtraFileType";
+	    public const string ExtraFileType = "No.NordicSemi.Doid.DFU.extra.ExtraFileType";
 	    /**
 	     * <p>
 	     * The file contains a new version of Soft Device.
@@ -214,7 +218,7 @@ namespace No.NordicSemi.Droid.DFU
 	    /**
 	     * An extra field with progress and error information used in broadcast events.
 	     */
-	    public const String ExtraData = "No.NordicSemi.Doid.DFU.extra.ExtraData";
+	    public const string ExtraData = "No.NordicSemi.Doid.DFU.extra.ExtraData";
 	    /**
 	     * An extra field to send the progress or error information in the DFU notification. The value may contain:
 	     * <ul>
@@ -237,28 +241,28 @@ namespace No.NordicSemi.Droid.DFU
 	     * To check if error occurred use:<br />
 	     * {@code bool error = progressValue >= DfuBaseService.ErrorMask;}
 	     */
-	    public const String ExtraProgress = "No.NordicSemi.Doid.DFU.extra.ExtraProgress";
+	    public const string ExtraProgress = "No.NordicSemi.Doid.DFU.extra.ExtraProgress";
 	    /**
 	     * The number of currently transferred part. The SoftDevice and Bootloader may be send together as one part. If user wants to upload them together with an application it has to be sent
 	     * in another connection as the second part.
 	     *
 	     * @see No.NordicSemi.Doid.DFU.DfuBaseService#ExtraPartsTotal
 	     */
-	    public const String ExtraPartCurrent = "No.NordicSemi.Doid.DFU.extra.ExtraPartCurrent";
+	    public const string ExtraPartCurrent = "No.NordicSemi.Doid.DFU.extra.ExtraPartCurrent";
 	    /**
 	     * Number of parts in total.
 	     *
 	     * @see No.NordicSemi.Doid.DFU.DfuBaseService#ExtraPartCurrent
 	     */
-	    public const String ExtraPartsTotal = "No.NordicSemi.Doid.DFU.extra.ExtraPartsTotal";
+	    public const string ExtraPartsTotal = "No.NordicSemi.Doid.DFU.extra.ExtraPartsTotal";
 	    /**
 	     * The current upload speed in bytes/millisecond.
 	     */
-	    public const String ExtraSpeedBPerMs = "No.NordicSemi.Doid.DFU.extra.ExtraSpeedBPerMs";
+	    public const string ExtraSpeedBPerMs = "No.NordicSemi.Doid.DFU.extra.ExtraSpeedBPerMs";
 	    /**
 	     * The average upload speed in bytes/millisecond for the current part.
 	     */
-	    public const String ExtraAvgSpeedBPerMs = "No.NordicSemi.Doid.DFU.extra.ExtraAvgSpeedBPerMs";
+	    public const string ExtraAvgSpeedBPerMs = "No.NordicSemi.Doid.DFU.extra.ExtraAvgSpeedBPerMs";
 	    /**
 	     * The broadcast message contains the following extras:
 	     * <ul>
@@ -282,7 +286,7 @@ namespace No.NordicSemi.Droid.DFU
 	     * <li>{@link #ExtraAvgSpeedBPerMs} - the average transmission speed in bytes/millisecond as float</li>
 	     * </ul>
 	     */
-	    public const String BroadcartProgress = "No.NordicSemi.Doid.DFU.broadcast.BroadcartProgress";
+	    public const string BroadcartProgress = "No.NordicSemi.Doid.DFU.broadcast.BroadcartProgress";
 	    /**
 	     * Service is connecting to the remote DFU target.
 	     */
@@ -319,13 +323,13 @@ namespace No.NordicSemi.Droid.DFU
 	     * <li>{@link #ExtraDeviceAddress} - the target device address</li>
 	     * </ul>
 	     */
-	    public const String BroadcastError = "No.NordicSemi.Doid.DFU.broadcast.BroadcastError";
+	    public const string BroadcastError = "No.NordicSemi.Doid.DFU.broadcast.BroadcastError";
 	    /**
 	     * The type of the error. This extra contains information about that kind of error has occurred. Connection state errors and other errors may share the same numbers.
 	     * For example, the {@link BluetoothGattCallback#onCharacteristicWrite(BluetoothGatt, BluetoothGattCharacteristic, int)} method may return a status code 8 (GATT INSUF AUTHORIZATION),
 	     * while the status code 8 returned by {@link BluetoothGattCallback#onConnectionStateChange(BluetoothGatt, int, int)} is a GATT CONN TIMEOUT error.
 	     */
-	    public const String ExtraErrorType = "No.NordicSemi.Doid.DFU.extra.ExtraErrorType";
+	    public const string ExtraErrorType = "No.NordicSemi.Doid.DFU.extra.ExtraErrorType";
 	    public const int ErrorTypeOther = 0;
 	    public const int ErrorTypeCommunicationState = 1;
 	    public const int ErrorTypeCommunication = 2;
@@ -393,9 +397,9 @@ namespace No.NordicSemi.Droid.DFU
 	     * <li>{@link #ExtraLogMessage}</li> - The log message
 	     * </ul>
 	     */
-	    public const String BroadcastLog = "No.NordicSemi.Doid.DFU.broadcast.BroadcastLog";
-	    public const String ExtraLogMessage = "No.NordicSemi.Doid.DFU.extra.EXTRA_LOG_INFO";
-	    public const String ExtraLogLevel = "No.NordicSemi.Doid.DFU.extra.ExtraLogLevel";
+	    public const string BroadcastLog = "No.NordicSemi.Doid.DFU.broadcast.BroadcastLog";
+	    public const string ExtraLogMessage = "No.NordicSemi.Doid.DFU.extra.EXTRA_LOG_INFO";
+	    public const string ExtraLogLevel = "No.NordicSemi.Doid.DFU.extra.ExtraLogLevel";
 	    /*
 	     * Note:
 	     * The nRF Logger API library has been excluded from the DfuLibrary.
@@ -433,11 +437,11 @@ namespace No.NordicSemi.Droid.DFU
 	     * Activity may broadcast this broadcast in order to pause, resume or abort DFU process.
 	     * Use {@link #ExtraAction} extra to pass the action.
 	     */
-	    public const String BroadcastAction = "No.NordicSemi.Doid.DFU.broadcast.BroadcastAction";
+	    public const string BroadcastAction = "No.NordicSemi.Doid.DFU.broadcast.BroadcastAction";
 	    /**
 	     * The action extra. It may have one of the following values: {@link #ActionPause}, {@link #ActionResume}, {@link #ActionAbort}.
 	     */
-	    public const String ExtraAction = "No.NordicSemi.Doid.DFU.extra.ExtraAction";
+	    public const string ExtraAction = "No.NordicSemi.Doid.DFU.extra.ExtraAction";
 	    /** Pauses the upload. The service will wait for broadcasts with the action set to {@link #ActionResume} or {@link #ActionAbort}. */
 	    public const int ActionPause = 0;
 	    /** Resumes the upload that has been paused before using {@link #ActionPause}. */
@@ -498,11 +502,11 @@ namespace No.NordicSemi.Droid.DFU
 	    /**
 	     * Lock used in synchronization purposes
 	     */
-	    private readonly Object _lock = new Object();
+	    private readonly Java.Lang.Object _lock = new Java.Lang.Object();
 	    private BluetoothAdapter _bluetoothAdapter;
 	    private InputStream _inputStream;
-	    private String _deviceAddress;
-	    private String _deviceName;
+	    private string _deviceAddress;
+	    private string _deviceName;
 	    /**
 	     * The current connection state. If its value is > 0 than an error has occurred. Error number is a negative value of _connectionState
 	     */
@@ -608,7 +612,93 @@ namespace No.NordicSemi.Droid.DFU
 	    private BroadcastReceiver _bondStateBroadcastReceiver;
 
 	    private GattCallback _gattCallback = new GattCallback();
-        /*
+
+        private void _gattCallback_DeviceConnectionStateChanged(object sender, DeviceConnectionStateChangeEventArgs e)
+        {
+ 	        // Check whether an error occurred
+			if (e.Status == GattStatus.Success) 
+            {
+				if (e.NewState == ProfileState.Connected) {
+					Log.Info("DfuBaseService", "Connected to GATT server");
+					_connectionState = StateConnected;
+
+					/*
+					    *  The onConnectionStateChange callback is called just after establishing connection and before sending Encryption Request BLE event in case of a paired device. 
+					    *  In that case and when the Service Changed CCCD is enabled we will get the indication after initializing the encryption, about 1600 milliseconds later. 
+					    *  If we discover services right after connecting, the onServicesDiscovered callback will be called immediately, before receiving the indication and the following 
+					    *  service discovery and we may end up with old, application's services instead.
+					    *  
+					    *  This is to support the buttonless switch from application to bootloader mode where the DFU bootloader notifies the master about service change.
+					    *  Tested on Nexus 4 (Android 4.4.4 and 5), Nexus 5 (Android 5), Samsung Note 2 (Android 4.4.2). The time after connection to end of service discovery is about 1.6s 
+					    *  on Samsung Note 2.
+					    *  
+					    *  NOTE: We are doing this to avoid the hack with calling the hidden gatt.refresh() method, at least for bonded devices.
+					    */
+					if (e.Gatt.Device.BondState == Bond.Bonded) {
+						try {
+							synchronized (this) {
+								logd("Waiting 1600 ms for a possible Service Changed indication...");
+								wait(1600);
+
+								// After 1.6s the services are already discovered so the following gatt.discoverServices() finishes almost immediately.
+
+								// NOTE: This also works with shorted waiting time. The gatt.discoverServices() must be called after the indication is received which is
+								// about 600ms after establishing connection. Values 600 - 1600ms should be OK.
+							}
+						} catch (InterruptedException ex) {
+							// Do nothing
+						}
+					}
+
+					// Attempts to discover services after successful connection.
+					bool success = e.Gatt.DiscoverServices();
+					logi("Attempting to start service discovery... " + (success ? "succeed" : "failed"));
+
+					if (!success) {
+						_error = ErrorServiceDiscoveryNotStarted;
+					} else {
+						// Just return here, lock will be notified when service discovery finishes
+						return;
+					}
+				} else if (e.NewState == ProfileState.Disconnected) {
+					logi("Disconnected from GATT server");
+					_paused = false;
+					_connectionState = StateDisconnected;
+				}
+			} else {
+				Log.Error("DfuBaseService", "Connection state change error: " + e.Status + " newState: " + e.NewState);
+				_paused = false;
+				_error = ErrorConnectionStateMask | (int)e.Status;
+			}
+        }
+
+        private void _gattCallback_DescriptorValueUpdated(object sender, BluetoothGattCharacteristicEventArgs e)
+        {
+ 	        throw new NotImplementedException();
+        }
+
+        private void _gattCallback_CharacteristicWrite(object sender, BluetoothGattCharacteristicEventArgs e)
+        {
+ 	        throw new NotImplementedException();
+        }
+
+        private void _gattCallback_CharacteristicRead(object sender, BluetoothGattCharacteristicEventArgs e)
+        {
+ 	        throw new NotImplementedException();
+        }
+
+        private void _gattCallback_CharacteristicChanged(object sender, BluetoothGattCharacteristicEventArgs e)
+        {
+ 	        throw new NotImplementedException();
+        }
+
+        private void _gattCallback_ServicesDiscovered(object sender, GattEventArgs e)
+        {
+ 	        throw new NotImplementedException();
+        }
+
+
+/*
         {
 		    @Override
 		    public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -928,6 +1018,13 @@ namespace No.NordicSemi.Droid.DFU
             _connectionStateBroadcastReceiver = new ConnectionStateBroadcastReceiver(ref _deviceAddress, ref _connectionState);
             _dfuActionReceiver = new DfuActionReceiver(ref _paused, ref _aborted);
             _bondStateBroadcastReceiver = new BondStateBroadcastReceiver(ref _deviceAddress, ref _requestCompleted);
+
+            _gattCallback.CharacteristicChanged +=_gattCallback_CharacteristicChanged;
+            _gattCallback.CharacteristicRead +=_gattCallback_CharacteristicRead;
+            _gattCallback.CharacteristicWrite +=_gattCallback_CharacteristicWrite;
+            _gattCallback.DescriptorValueUpdated +=_gattCallback_DescriptorValueUpdated;
+            _gattCallback.DeviceConnectionStateChanged +=_gattCallback_DeviceConnectionStateChanged;
+            _gattCallback.ServicesDiscovered +=_gattCallback_ServicesDiscovered;
 	    }
 
 	    private static IntentFilter makeDfuActionIntentFilter() {

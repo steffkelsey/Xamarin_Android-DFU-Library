@@ -28,8 +28,7 @@ namespace No.NordicSemi.Droid.DFU
     public class GattCallback : BluetoothGattCallback
     {
         public event EventHandler<DeviceConnectionStateChangeEventArgs> DeviceConnectionStateChanged = delegate { };
-        public event EventHandler ServicesDiscovered = delegate { };
-        public event EventHandler<BluetoothGattCharacteristicEventArgs> GattOperationFailed = delegate { };
+        public event EventHandler<GattEventArgs> ServicesDiscovered = delegate { };
         public event EventHandler<BluetoothGattCharacteristicEventArgs> CharacteristicWrite = delegate { };
         public event EventHandler<BluetoothGattCharacteristicEventArgs> CharacteristicChanged = delegate { };
         public event EventHandler<BluetoothGattCharacteristicEventArgs> CharacteristicRead = delegate { };
@@ -40,7 +39,8 @@ namespace No.NordicSemi.Droid.DFU
         {
             this.CharacteristicChanged(this, new BluetoothGattCharacteristicEventArgs()
             {
-                Characteristic = characteristic
+                Characteristic = characteristic,
+                Gatt = gatt
             });
         }
 
@@ -49,7 +49,8 @@ namespace No.NordicSemi.Droid.DFU
             this.CharacteristicRead(this, new BluetoothGattCharacteristicEventArgs()
             {
                 Characteristic = characteristic,
-                Status = status
+                Status = status,
+                Gatt = gatt
             });
         }
 
@@ -58,7 +59,8 @@ namespace No.NordicSemi.Droid.DFU
             this.CharacteristicWrite(this, new BluetoothGattCharacteristicEventArgs()
             {
                 Characteristic = characteristic,
-                Status = status
+                Status = status,
+                Gatt = gatt
             });
         }
 
@@ -67,7 +69,8 @@ namespace No.NordicSemi.Droid.DFU
             DeviceConnectionStateChanged(this, new DeviceConnectionStateChangeEventArgs()
             {
                 Status = status,
-                NewState = newState
+                NewState = newState,
+                Gatt = gatt
             });
         }
 
@@ -81,7 +84,8 @@ namespace No.NordicSemi.Droid.DFU
             this.DescriptorValueUpdated(this, new BluetoothGattCharacteristicEventArgs()
             {
                 Characteristic = descriptor.Characteristic,
-                Status = status
+                Status = status,
+                Gatt = gatt
             });
         }
 
@@ -97,7 +101,11 @@ namespace No.NordicSemi.Droid.DFU
 
         public override void OnServicesDiscovered(BluetoothGatt gatt, GattStatus status)
         {
-            this.ServicesDiscovered(this, new EventArgs());
+            this.ServicesDiscovered(this, new GattEventArgs() 
+            { 
+                Gatt = gatt,
+                Status = status
+            });
         }
     }
 }

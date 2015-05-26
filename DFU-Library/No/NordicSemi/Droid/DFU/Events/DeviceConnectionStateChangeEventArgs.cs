@@ -27,6 +27,7 @@ namespace No.NordicSemi.Droid.DFU.Events
     public class DeviceConnectionStateChangeEventArgs : GattEventArgs
     {
         public ProfileState NewState;
+        public BluetoothGatt Gatt;
 
         public DeviceConnectionStateChangeEventArgs() : base() { }
     }

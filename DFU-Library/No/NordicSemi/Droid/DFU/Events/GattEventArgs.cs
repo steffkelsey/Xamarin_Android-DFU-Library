@@ -27,6 +27,7 @@ namespace No.NordicSemi.Droid.DFU.Events
     public class GattEventArgs : EventArgs
     {
         public GattStatus Status;
+        public BluetoothGatt Gatt;
 
         public GattEventArgs() : base() { }
     }
