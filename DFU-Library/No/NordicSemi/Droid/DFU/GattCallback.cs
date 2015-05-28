@@ -32,12 +32,13 @@ namespace No.NordicSemi.Droid.DFU
         public event EventHandler<BluetoothGattCharacteristicEventArgs> CharacteristicWrite = delegate { };
         public event EventHandler<BluetoothGattCharacteristicEventArgs> CharacteristicChanged = delegate { };
         public event EventHandler<BluetoothGattCharacteristicEventArgs> CharacteristicRead = delegate { };
-        public event EventHandler<BluetoothGattCharacteristicEventArgs> DescriptorValueUpdated = delegate { };
+        public event EventHandler<BluetoothGattDescriptorEventArgs> DescriptorWrite = delegate { };
+        public event EventHandler<BluetoothGattDescriptorEventArgs> DescriptorRead = delegate { };
         public GattCallback() { }
 
         public override void OnCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic)
         {
-            this.CharacteristicChanged(this, new BluetoothGattCharacteristicEventArgs()
+            CharacteristicChanged(this, new BluetoothGattCharacteristicEventArgs()
             {
                 Characteristic = characteristic,
                 Gatt = gatt
@@ -46,7 +47,7 @@ namespace No.NordicSemi.Droid.DFU
 
         public override void OnCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, GattStatus status)
         {
-            this.CharacteristicRead(this, new BluetoothGattCharacteristicEventArgs()
+            CharacteristicRead(this, new BluetoothGattCharacteristicEventArgs()
             {
                 Characteristic = characteristic,
                 Status = status,
@@ -56,7 +57,7 @@ namespace No.NordicSemi.Droid.DFU
 
         public override void OnCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, GattStatus status)
         {
-            this.CharacteristicWrite(this, new BluetoothGattCharacteristicEventArgs()
+            CharacteristicWrite(this, new BluetoothGattCharacteristicEventArgs()
             {
                 Characteristic = characteristic,
                 Status = status,
@@ -76,14 +77,19 @@ namespace No.NordicSemi.Droid.DFU
 
         public override void OnDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, GattStatus status)
         {
-            throw new NotImplementedException();
+            DescriptorRead(this, new BluetoothGattDescriptorEventArgs()
+            {
+                Descriptor = descriptor,
+                Status = status,
+                Gatt = gatt
+            });
         }
 
         public override void OnDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, GattStatus status)
         {
-            this.DescriptorValueUpdated(this, new BluetoothGattCharacteristicEventArgs()
+            DescriptorWrite(this, new BluetoothGattDescriptorEventArgs()
             {
-                Characteristic = descriptor.Characteristic,
+                Descriptor = descriptor,
                 Status = status,
                 Gatt = gatt
             });
